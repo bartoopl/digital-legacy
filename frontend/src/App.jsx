@@ -24,6 +24,12 @@ import MediaDetail from './components/media/MediaDetail';
 import NoteForm from './components/media/NoteForm';
 import MediaUpload from './components/media/MediaUpload';
 
+// Recipient Components
+import RecipientList from './components/recipients/RecipientList.jsx';
+import RecipientForm from './components/recipients/RecipientForm.jsx';
+import RecipientDetail from './components/recipients/RecipientDetail.jsx';
+import RecipientMediaAssign from './components/recipients/RecipientMediaAssign.jsx';
+
 // Set base URL for axios
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -106,21 +112,44 @@ function App() {
                 } 
               />
               
-              {/* Recipients placeholder routes */}
+              {/* Recipients Routes */}
               <Route 
-                path="/recipients/*" 
+                path="/recipients" 
                 element={
                   <PrivateRoute>
-                    <div className="container mx-auto px-4 py-8">
-                      <h1 className="text-2xl font-bold mb-4">Recipients Management</h1>
-                      <p className="mb-4">This feature is coming soon!</p>
-                      <p>The recipients management will allow you to:</p>
-                      <ul className="list-disc pl-8 mt-2">
-                        <li>Add people who will receive your messages</li>
-                        <li>Assign specific media to specific recipients</li>
-                        <li>Add personalized messages for each recipient</li>
-                      </ul>
-                    </div>
+                    <RecipientList />
+                  </PrivateRoute>
+                } 
+              />
+              <Route 
+                path="/recipients/new" 
+                element={
+                  <PrivateRoute>
+                    <RecipientForm />
+                  </PrivateRoute>
+                } 
+              />
+              <Route 
+                path="/recipients/edit/:id" 
+                element={
+                  <PrivateRoute>
+                    <RecipientForm />
+                  </PrivateRoute>
+                } 
+              />
+              <Route 
+                path="/recipients/:id" 
+                element={
+                  <PrivateRoute>
+                    <RecipientDetail />
+                  </PrivateRoute>
+                } 
+              />
+              <Route 
+                path="/recipients/:id/media" 
+                element={
+                  <PrivateRoute>
+                    <RecipientMediaAssign />
                   </PrivateRoute>
                 } 
               />

@@ -5,7 +5,9 @@ import axios from 'axios';
 const RecipientMediaAssign = () => {
     const [recipient, setRecipient] = useState(null);
     const [allMedia, setAllMedia] = useState([]);
+    const [assignedMediaIds, setAssignedMediaIds] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
 
     const { id } = useParams();
@@ -14,17 +16,30 @@ const RecipientMediaAssign = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch recipient data
+                console.log(`Fetching data for recipient ID: ${id}`);
+
+                // Najpierw pobierz dane odbiorcy
                 const recipientRes = await axios.get(`/api/recipients/${id}`);
+                console.log('Recipient data:', recipientRes.data);
                 setRecipient(recipientRes.data);
 
-                // Fetch all user media
+                // Ustaw listę przypisanych mediów
+                if (recipientRes.data.media && recipientRes.data.media.length > 0) {
+                    console.log('Assigned media IDs:', recipientRes.data.media);
+                    setAssignedMediaIds(recipientRes.data.media);
+                }
+
+                // Następnie pobierz wszystkie media
                 const mediaRes = await axios.get('/api/media');
+                console.log('All media:', mediaRes.data);
                 setAllMedia(mediaRes.data);
 
                 setLoading(false);
             } catch (err) {
-                setError(err.response?.data?.message || 'Error fetching data');
+                console.error('Error fetching data:', err);
+                const errorMessage = err.response?.data?.message || 'Failed to load data. Please try again later.';
+                console.error('Error message:', errorMessage);
+                setError(errorMessage);
                 setLoading(false);
             }
         };
@@ -32,36 +47,44 @@ const RecipientMediaAssign = () => {
         fetchData();
     }, [id]);
 
-    // Check if media is assigned to this recipient
+    // Sprawdź czy medium jest przypisane do tego odbiorcy
     const isMediaAssigned = (mediaId) => {
-        return recipient.media && recipient.media.some(id => id === mediaId);
+        return assignedMediaIds.includes(mediaId);
     };
 
-    // Toggle media assignment
+    // Przełącz przypisanie medium
     const toggleMediaAssignment = async (mediaId) => {
         try {
-            const isAssigned = isMediaAssigned(mediaId);
+            setSaving(true);
 
-            await axios.put(`/api/recipients/${id}/media/${mediaId}`, {
+            const isAssigned = isMediaAssigned(mediaId);
+            console.log(`Toggling media ${mediaId} assignment to ${isAssigned ? 'false' : 'true'}`);
+
+            // Wyślij żądanie do API
+            const response = await axios.put(`/api/recipients/${id}/media/${mediaId}`, {
                 assign: !isAssigned
             });
 
-            // Update local state
+            console.log('API response:', response.data);
+
+            // Zaktualizuj lokalny stan
             if (isAssigned) {
-                // Remove media
-                setRecipient({
-                    ...recipient,
-                    media: recipient.media.filter(id => id !== mediaId)
-                });
+                // Usuń medium z listy przypisanych
+                setAssignedMediaIds(
+                    assignedMediaIds.filter(id => id !== mediaId)
+                );
             } else {
-                // Add media
-                setRecipient({
-                    ...recipient,
-                    media: [...recipient.media, mediaId]
-                });
+                // Dodaj medium do listy przypisanych
+                setAssignedMediaIds([...assignedMediaIds, mediaId]);
             }
+
+            setSaving(false);
         } catch (err) {
-            setError(err.response?.data?.message || 'Error updating media assignment');
+            console.error('Error toggling media assignment:', err);
+            const errorMessage = err.response?.data?.message || 'Failed to update media assignment. Please try again.';
+            console.error('Error message:', errorMessage);
+            setError(errorMessage);
+            setSaving(false);
         }
     };
 
@@ -127,26 +150,27 @@ const RecipientMediaAssign = () => {
                 {allMedia.length === 0 ? (
                     <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
                         <p>You don't have any media to assign. Create some media first.</p>
-                        <Link
-                            to="/media/note/new"
-                            className="inline-block mt-2 text-blue-600 hover:text-blue-800"
-                        >
-                            Create Note
-                        </Link>
-                        {' or '}
-                        <Link
-                            to="/media/upload"
-                            className="inline-block mt-2 text-blue-600 hover:text-blue-800"
-                        >
-                            Upload Media
-                        </Link>
+                        <div className="mt-3">
+                            <Link
+                                to="/media/note/new"
+                                className="inline-block mr-3 text-blue-600 hover:text-blue-800"
+                            >
+                                Create Note
+                            </Link>
+                            <Link
+                                to="/media/upload"
+                                className="inline-block text-blue-600 hover:text-blue-800"
+                            >
+                                Upload Media
+                            </Link>
+                        </div>
                     </div>
                 ) : (
                     <div className="bg-white rounded-lg shadow overflow-hidden">
                         <div className="px-6 py-4">
                             <p className="mb-4 text-gray-600">
                                 Select the media items you want to share with this recipient.
-                                Assigned media will be sent to the recipient when your subscription expires.
+                                When your subscription expires, assigned media will be sent to this recipient.
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -158,7 +182,7 @@ const RecipientMediaAssign = () => {
                                                 ? 'border-blue-500 bg-blue-50'
                                                 : 'hover:bg-gray-50'
                                         }`}
-                                        onClick={() => toggleMediaAssignment(media._id)}
+                                        onClick={() => !saving && toggleMediaAssignment(media._id)}
                                     >
                                         <div className="flex justify-between items-start">
                                             <div>
@@ -168,7 +192,7 @@ const RecipientMediaAssign = () => {
                                                     Created {new Date(media.createdAt).toLocaleDateString()}
                                                 </p>
                                                 {media.type === 'note' && media.content && (
-                                                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                                                    <p className="text-sm text-gray-600 mt-2 truncate max-w-xs">
                                                         {media.content}
                                                     </p>
                                                 )}
@@ -179,6 +203,7 @@ const RecipientMediaAssign = () => {
                                                     checked={isMediaAssigned(media._id)}
                                                     onChange={() => {}} // Handled by the parent div onClick
                                                     className="h-5 w-5 text-blue-600"
+                                                    disabled={saving}
                                                 />
                                             </div>
                                         </div>
@@ -188,13 +213,14 @@ const RecipientMediaAssign = () => {
 
                             <div className="mt-6 pt-4 border-t flex justify-between items-center">
                                 <div className="text-gray-600">
-                                    {recipient.media ? recipient.media.length : 0} item(s) assigned
+                                    {assignedMediaIds.length} item(s) assigned
                                 </div>
                                 <button
                                     onClick={() => navigate(`/recipients/${id}`)}
                                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    disabled={saving}
                                 >
-                                    Done
+                                    {saving ? 'Saving...' : 'Done'}
                                 </button>
                             </div>
                         </div>

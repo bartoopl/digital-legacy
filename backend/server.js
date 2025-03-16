@@ -30,6 +30,12 @@ app.use(express.urlencoded({ extended: true }));
 // Statyczny folder dla przesyłanych plików
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Specjalna obsługa dla endpoint'u webhook Stripe - musi być przed app.use(express.json())
+app.use('/api/subscriptions/webhook', express.raw({ type: 'application/json' }));
+
+// Parse JSON bodies
+app.use(express.json());
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
@@ -46,6 +52,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/media', require('./routes/media'));
 app.use('/api/recipients', require('./routes/recipients'));
+app.use('/api/subscriptions', require('./routes/subscriptions'));
 
 // Default route
 app.get('/', (req, res) => {

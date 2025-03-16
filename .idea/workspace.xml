@@ -4,15 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45dba644-b0ec-471d-ad54-15ad76f52c68" name="Changes" comment="MVP project whithout recipments">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/recipients/RecipientDetail.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/recipients/RecipientList.jsx" afterDir="false" />
+    <list default="true" id="45dba644-b0ec-471d-ad54-15ad76f52c68" name="Changes" comment="Recipients added">
+      <change afterPath="$PROJECT_DIR$/backend/config/stripe.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/controllers/subscriptionController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/Subscription.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/routes/subscriptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/About.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/Pricing.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/subscription/PricingPlans.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/subscription/Subscription.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/subscription/SubscriptionCancel.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/subscription/SubscriptionDetails.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/subscription/SubscriptionSuccess.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/context/SubscriptionContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/recipients.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/recipients.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/recipments/RecipmentDetail.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/recipments/RecipmentForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/recipients/RecipientForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/recipments/RecipmentMediaAssign.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/recipients/RecipientMediaAssign.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/dashboard/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dashboard/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +47,9 @@
     &quot;accountId&quot;: &quot;20362e07-bc9b-463a-a07b-3bf34210c7df&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -55,6 +71,12 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend" />
+      <recent name="$PROJECT_DIR$/backend/controllers" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,7 +93,8 @@
       <option name="presentableId" value="Default" />
       <updated>1741984154613</updated>
       <workItem from="1741984155901" duration="7156000" />
-      <workItem from="1742037470623" duration="2553000" />
+      <workItem from="1742037470623" duration="7604000" />
+      <workItem from="1742162001224" duration="1038000" />
     </task>
     <task id="LOCAL-00001" summary="MVP project whithout recipments">
       <option name="closed" value="true" />
@@ -81,7 +104,31 @@
       <option name="project" value="LOCAL" />
       <updated>1741990099855</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Recipients added">
+      <option name="closed" value="true" />
+      <created>1742040254714</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1742040254714</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Recipients added">
+      <option name="closed" value="true" />
+      <created>1742040312862</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742040312862</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Recipients added">
+      <option name="closed" value="true" />
+      <created>1742040374980</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742040374980</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -89,7 +136,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="MVP project whithout recipments" />
-    <option name="LAST_COMMIT_MESSAGE" value="MVP project whithout recipments" />
+    <MESSAGE value="Recipients added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Recipients added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -98,6 +146,12 @@
           <url>file://$PROJECT_DIR$/frontend/src/components/recipients/RecipientMediaAssign.jsx</url>
           <line>198</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/context/SubscriptionContext.jsx</url>
+          <line>57</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

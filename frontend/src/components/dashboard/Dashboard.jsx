@@ -1,8 +1,41 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 const Dashboard = () => {
-    const { user } = useContext(AuthContext);
+    const { user, isAuthenticated, loading } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    // Przekieruj na stronę logowania, jeśli użytkownik nie jest zalogowany
+    useEffect(() => {
+        if (!loading && !isAuthenticated) {
+            navigate('/login');
+        }
+    }, [isAuthenticated, loading, navigate]);
+
+    // Pokaż ładowanie podczas pobierania danych
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    // Jeśli nie ma danych użytkownika mimo uwierzytelnienia
+    if (!user) {
+        return (
+            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                <div className="bg-white p-8 rounded shadow-md">
+                    <h2 className="text-xl font-bold mb-4">Nie można załadować danych</h2>
+                    <p className="mb-4">Wystąpił problem podczas ładowania danych użytkownika.</p>
+                    <Link to="/" className="text-blue-600 hover:text-blue-800">
+                        Wróć do strony głównej
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -18,10 +51,10 @@ const Dashboard = () => {
                             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                                 <div className="px-4 py-5 sm:px-6">
                                     <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                        Welcome, {user?.firstName} {user?.lastName}
+                                        Witaj, {user.firstName} {user.lastName}
                                     </h3>
                                     <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                                        This is your Digital Legacy dashboard. Here you can manage your messages, recipients, and subscription.
+                                        To jest Twój panel Digital Legacy. Tutaj możesz zarządzać swoimi wiadomościami, odbiorcami i subskrypcją.
                                     </p>
                                 </div>
                                 <div className="border-t border-gray-200">
@@ -31,17 +64,17 @@ const Dashboard = () => {
                                                 Email
                                             </dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                {user?.email}
+                                                {user.email}
                                             </dd>
                                         </div>
                                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                             <dt className="text-sm font-medium text-gray-500">
-                                                Subscription Status
+                                                Status subskrypcji
                                             </dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          {user?.subscriptionStatus || 'Active'}
-                        </span>
+                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    {user.subscriptionStatus || 'Aktywna'}
+                                                </span>
                                             </dd>
                                         </div>
                                     </dl>
@@ -60,7 +93,7 @@ const Dashboard = () => {
                                             <div className="ml-5 w-0 flex-1">
                                                 <dl>
                                                     <dt className="text-sm font-medium text-gray-500 truncate">
-                                                        Messages
+                                                        Wiadomości
                                                     </dt>
                                                     <dd>
                                                         <div className="text-lg font-medium text-gray-900">
@@ -73,9 +106,9 @@ const Dashboard = () => {
                                     </div>
                                     <div className="bg-gray-50 px-4 py-4 sm:px-6">
                                         <div className="text-sm">
-                                            <a href="/media" className="font-medium text-blue-600 hover:text-blue-500">
-                                                Manage your messages
-                                            </a>
+                                            <Link to="/media" className="font-medium text-blue-600 hover:text-blue-500">
+                                                Zarządzaj wiadomościami
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +124,7 @@ const Dashboard = () => {
                                             <div className="ml-5 w-0 flex-1">
                                                 <dl>
                                                     <dt className="text-sm font-medium text-gray-500 truncate">
-                                                        Recipients
+                                                        Odbiorcy
                                                     </dt>
                                                     <dd>
                                                         <div className="text-lg font-medium text-gray-900">
@@ -104,9 +137,9 @@ const Dashboard = () => {
                                     </div>
                                     <div className="bg-gray-50 px-4 py-4 sm:px-6">
                                         <div className="text-sm">
-                                            <a href="/recipients" className="font-medium text-blue-600 hover:text-blue-500">
-                                                Manage your recipients
-                                            </a>
+                                            <Link to="/recipients" className="font-medium text-blue-600 hover:text-blue-500">
+                                                Zarządzaj odbiorcami
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -122,11 +155,11 @@ const Dashboard = () => {
                                             <div className="ml-5 w-0 flex-1">
                                                 <dl>
                                                     <dt className="text-sm font-medium text-gray-500 truncate">
-                                                        Subscription
+                                                        Subskrypcja
                                                     </dt>
                                                     <dd>
                                                         <div className="text-lg font-medium text-gray-900">
-                                                            Active
+                                                            Aktywna
                                                         </div>
                                                     </dd>
                                                 </dl>
@@ -135,9 +168,9 @@ const Dashboard = () => {
                                     </div>
                                     <div className="bg-gray-50 px-4 py-4 sm:px-6">
                                         <div className="text-sm">
-                                            <a href="/subscription" className="font-medium text-blue-600 hover:text-blue-500">
-                                                Manage your subscription
-                                            </a>
+                                            <Link to="/subscription" className="font-medium text-blue-600 hover:text-blue-500">
+                                                Zarządzaj subskrypcją
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
